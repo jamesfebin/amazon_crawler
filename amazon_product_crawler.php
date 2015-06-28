@@ -11,7 +11,7 @@
 
 $GLOBALS['count']=0;
 add_action('read_file_action','read_file',1,2);
-//add_action('crawl_product_action','crawl_product_details');
+add_action('crawl_product_action','crawl_product_details',1,3);
 
 
 function crawl_product_details($ASIN_URL,$ASIN,$uniqid)
@@ -219,8 +219,8 @@ function read_file($filepath,$email){
               }
               $asin_url =  $data[23];
               $asin =  $data[0];
-            //  wp_schedule_single_event(time()+2,'crawl_product_action',array($asin_url,$asin,$uniqid));
-              crawl_product_details($asin_url,$asin,$uniqid);
+              wp_schedule_single_event(time()+2,'crawl_product_action',array($asin_url,$asin,$uniqid));
+            //  crawl_product_details($asin_url,$asin,$uniqid);
         }
       }
 
@@ -242,7 +242,7 @@ function handle_upload(){
                 copy($file['tmp_name'], $upload_dir['path']. '/ASIN' . $uniqid . '.csv');
                 $filepath = $upload_dir['path']. '/ASIN' . $uniqid . '.csv';
               //  read_file($filepath,$email);
-               wp_schedule_single_event(time()+10, 'read_file_action', array($filepath,$email));
+               wp_schedule_single_event(time()+5, 'read_file_action', array($filepath,$email));
                 }
 }
 
